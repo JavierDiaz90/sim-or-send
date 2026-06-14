@@ -20,11 +20,11 @@
 
     // SEND IT dice roll, per round. Must sum to 100.
     odds: {
-      clean: 50,
-      overquote: 18,
-      decay: 14,
-      malicious: 10,
-      policy: 8,
+      clean: 10,
+      overquote: 32,
+      decay: 25,
+      malicious: 18,
+      policy: 15,
     },
 
     // Effect on funds when an event hits (percent of current portfolio).

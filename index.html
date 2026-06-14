@@ -4,103 +4,130 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <title>SIM OR SEND — The $1M Challenge</title>
+  <title>sim-or-send - Visual Studio Code</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div id="bg" aria-hidden="true">
-    <div class="bg-grid"></div>
-    <canvas id="bg-net"></canvas>
-    <div class="bg-vignette"></div>
-  </div>
-  <div id="app">
+  <div id="bg" aria-hidden="true"><div class="bg-grid"></div><canvas id="bg-net"></canvas><div class="bg-vignette"></div></div>
 
-    <!-- 1. Attract loop -->
-    <section id="screen-attract" class="screen">
-      <div class="brand">E N S O</div>
-      <h1 class="mega"><span class="w-sim">SIM</span><span class="or">or</span><span class="w-send">SEND</span></h1>
-      <p class="attract-q">Would you bet $1M that the quote you see is the trade you get?</p>
-      <button id="btn-start" class="btn btn-cta">TAP TO PLAY</button>
-      <p class="attract-sub">3 trades &middot; under 60 seconds &middot; top score today wins the prize</p>
-    </section>
+  <main class="workbench">
+    <header class="titlebar">
+      <div class="traffic"><i></i><i></i><i></i></div>
+      <div class="titlebar-nav">File&nbsp;&nbsp; Edit&nbsp;&nbsp; Selection&nbsp;&nbsp; View&nbsp;&nbsp; Go&nbsp;&nbsp; Run&nbsp;&nbsp; Terminal&nbsp;&nbsp; Help</div>
+      <div class="command-center"><span class="search-icon">&#128269;</span> sim-or-send</div>
+      <div class="layout-icons">&#9645;&nbsp; &#9638;&nbsp; &#9635;</div>
+    </header>
 
-    <!-- 2. Name entry -->
-    <section id="screen-name" class="screen">
-      <h2>Who&rsquo;s trading?</h2>
-      <input id="input-name" class="field" maxlength="14" placeholder="DISPLAY NAME" autocomplete="off" autocorrect="off" spellcheck="false">
-      <input id="input-contact" class="field contact" maxlength="60" placeholder="contact handle optional" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-      <button id="btn-begin" class="btn btn-cta">START &middot; $1,000,000</button>
-    </section>
+    <div class="workspace">
+      <aside class="activitybar" aria-hidden="true">
+        <div class="activity active">&#128196;</div><div class="activity">&#128269;</div><div class="activity branch">&#9095;</div><div class="activity">&#9655;</div><div class="activity">&#9638;</div>
+        <div class="activity-spacer"></div><div class="activity">&#9881;</div>
+      </aside>
+      <aside class="sidebar" aria-hidden="true">
+        <div class="side-title">EXPLORER <span>...</span></div>
+        <div class="tree-head">&#9662; SIM-OR-SEND</div>
+        <div class="tree file active"><span class="js-icon">JS</span> challenge.js</div>
+        <a class="tree file tree-link" href="leaderboard.html"><span class="log-icon">LOG</span> live_leaderboard.log</a>
+        <div class="tree file"><span class="md-icon">#</span> README.md</div>
+        <div class="tree file"><span class="env-icon">$</span> .env.local</div>
+        <div class="tree-head lower">&#9656; OUTLINE</div>
+        <div class="tree-head">&#9656; TIMELINE</div>
+      </aside>
 
-    <!-- 3. Brief -->
-    <section id="screen-brief" class="screen">
-      <p class="brief-line">Your fund needs <b>$1M USDT</b> moved into <b>ETH</b>.</p>
-      <p class="brief-line">Three trades. Clock is running.</p>
-      <div class="brief-count" id="brief-count">5</div>
-    </section>
-
-    <!-- 4. Round (reused for all three) -->
-    <section id="screen-round" class="screen">
-      <div class="timer-track"><div id="round-timer-bar"></div></div>
-      <header class="hud">
-        <div class="hud-cell"><label>PORTFOLIO</label><span id="hud-value">$1,000,000</span></div>
-        <div class="hud-round" id="hud-round">ROUND 1 / 3</div>
-        <div class="hud-cell"><label>CLOCK</label><span id="hud-clock">15.0</span></div>
-      </header>
-
-      <h3 id="round-title">MAINNET SWAP</h3>
-
-      <div class="quote-card">
-        <div class="pair">
-          <span class="from" id="q-from">1,000,000 USDT</span>
-          <span class="arrow">&rarr;</span>
-          <span class="to" id="q-out">238.10 ETH</span>
+      <section class="editor-area">
+        <div class="tabs">
+          <a class="tab active" href="index.html"><span class="js-icon">JS</span> challenge.js <b>&times;</b></a>
+          <a class="tab" href="leaderboard.html"><span class="log-icon">LOG</span> live_leaderboard.log <b>&times;</b></a>
         </div>
-        <div class="qrow"><span class="k">Rate</span><span class="v" id="q-rate"></span></div>
-        <div class="qrow"><span class="k">Expected output</span><span class="v" id="q-expected"></span></div>
-        <div class="qrow"><span class="k">Network cost</span><span class="v" id="q-gas"></span></div>
-        <div class="qrow"><span class="k">Max slippage</span><span class="v">0.50%</span></div>
-        <div class="route-chips" id="route-chips"></div>
-        <div class="decay-wrap hidden" id="decay-wrap">
-          <span>QUOTE EXPIRES <span id="decay-s">10.0</span>s</span>
-          <div class="decay-bar-track"><div id="decay-bar"></div></div>
+        <div class="breadcrumbs" aria-hidden="true">sim-or-send &gt; <span class="js-icon">JS</span> challenge.js &gt; <span class="purple">runChallenge()</span></div>
+
+        <div id="app" class="terminal-panel">
+          <div class="terminal-head" aria-hidden="true">
+            <div><span class="terminal-tab active">TERMINAL</span><span class="terminal-tab">OUTPUT</span><span class="terminal-tab">DEBUG CONSOLE</span><span class="terminal-tab">PROBLEMS <b>0</b></span></div>
+            <div class="terminal-actions">powershell &#9662;&nbsp;&nbsp; + &nbsp; &#9635; &nbsp; &times;</div>
+          </div>
+          <div class="terminal-context" aria-hidden="true"><span class="prompt-user">enso@quote-sim</span>:<span class="prompt-path">~/sim-or-send</span>$ <span id="context-command">node challenge.js --amount 1000000</span></div>
+
+          <section id="screen-attract" class="screen">
+            <div class="boot-log" aria-hidden="true">
+              <div><span class="dim">[09:41:02]</span> loading enso quote simulator...</div>
+              <div><span class="green">[OK]</span> route engine connected</div>
+              <div><span class="green">[OK]</span> challenge wallet funded: <span class="yellow">1,000,000 USDT</span></div>
+            </div>
+            <div class="brand">ENSO QUOTE SIMULATOR <span class="version">v1.0.0</span></div>
+            <h1 class="mega"><span class="w-sim">SIM</span><span class="or">OR</span><span class="w-send">SEND</span><span class="cursor">_</span></h1>
+            <p class="attract-q"><span class="prompt">?</span> Would you bet $1M that the quote you see is the trade you get?</p>
+            <button id="btn-start" class="btn btn-cta">RUN CHALLENGE</button>
+            <p class="attract-sub">3 trades <span>&middot;</span> under 60 seconds <span>&middot;</span> top score today wins</p>
+          </section>
+
+          <section id="screen-name" class="screen">
+            <div class="command-label"><span class="green">&#10095;</span> npm run challenge</div>
+            <h2>Initialize player session</h2>
+            <label class="field-label" for="input-name">? Enter display name <span>(required)</span></label>
+            <input id="input-name" class="field" maxlength="14" placeholder="required_player_name" autocomplete="off" autocorrect="off" spellcheck="false" required aria-required="true" aria-describedby="name-error">
+            <div id="name-error" class="field-error" role="alert" aria-live="polite"></div>
+            <label class="field-label contact-label" for="input-contact">? Prize contact <span>(optional)</span></label>
+            <input id="input-contact" class="field contact" maxlength="60" placeholder="email or @handle" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+            <button id="btn-begin" class="btn btn-cta">EXECUTE --CAPITAL $1M</button>
+          </section>
+
+          <section id="screen-brief" class="screen">
+            <div class="command-label"><span class="green">&#10095;</span> compiling strategy...</div>
+            <div class="brief-box">
+              <div class="brief-comment">// challenge.config.js</div>
+              <p class="brief-line"><span class="purple">const</span> capital = <b>1_000_000 USDT</b>;</p>
+              <p class="brief-line"><span class="purple">const</span> target = <b>ETH</b>;</p>
+              <p class="brief-line"><span class="purple">const</span> trades = <b>3</b>;</p>
+            </div>
+            <div class="brief-status"><span class="spinner">&#9696;</span> session begins in <span class="brief-count" id="brief-count">5</span>s</div>
+          </section>
+
+          <section id="screen-round" class="screen">
+            <div class="timer-track"><div id="round-timer-bar"></div></div>
+            <header class="hud">
+              <div class="hud-cell"><label>PORTFOLIO</label><span id="hud-value">$1,000,000</span></div>
+              <div class="hud-round" id="hud-round">ROUND 1 / 3</div>
+              <div class="hud-cell"><label>PROCESS TIMEOUT</label><span id="hud-clock">15.0</span><small>s</small></div>
+            </header>
+            <h3 id="round-title">MAINNET SWAP</h3>
+            <div class="quote-card">
+              <div class="code-line"><span class="ln">01</span><span class="purple">const</span> quote = <span class="blue">await</span> enso.<span class="yellow">getQuote</span>({</div>
+              <div class="pair"><span class="from" id="q-from">1,000,000 USDT</span><span class="arrow">=&gt;</span><span class="to" id="q-out">238.10 ETH</span></div>
+              <div class="qrow"><span class="k">rate</span><span class="v" id="q-rate"></span></div>
+              <div class="qrow"><span class="k">expectedOutput</span><span class="v" id="q-expected"></span></div>
+              <div class="qrow"><span class="k">networkCost</span><span class="v" id="q-gas"></span></div>
+              <div class="qrow"><span class="k">maxSlippage</span><span class="v">0.50%</span></div>
+              <div class="code-close">});</div>
+              <div class="route-label">// resolved route</div>
+              <div class="route-chips" id="route-chips"></div>
+              <div class="decay-wrap hidden" id="decay-wrap"><span>WARN quote expires in <span id="decay-s">10.0</span>s</span><div class="decay-bar-track"><div id="decay-bar"></div></div></div>
+              <div class="ticker" id="ticker" style="display:none"></div>
+            </div>
+            <div class="choices">
+              <button id="btn-send" class="btn btn-send"><span class="cmd">$ enso send --skip-simulation</span><strong>SEND IT</strong><small id="send-sub">instant execution / +2% clean-fill bonus</small></button>
+              <button id="btn-sim" class="btn btn-sim"><span class="cmd">$ enso simulate --replay-route</span><strong>SIMULATE</strong><small>inspect state changes / 2 seconds</small></button>
+            </div>
+          </section>
+
+          <section id="screen-result" class="screen">
+            <div class="result-label"><span class="green">&#10003;</span> PROCESS EXITED WITH CODE 0</div>
+            <div class="result-value" id="result-value">$0</div>
+            <div class="result-eth" id="result-eth"></div>
+            <div class="result-rank" id="result-rank"></div>
+            <div class="result-swag" id="result-swag"></div>
+            <div class="history" id="result-history"></div>
+            <p class="takeaway"><span class="blue">INFO</span> Production simulation takes milliseconds and costs nothing.<br><span class="dim">There is no speed bonus for skipping it.</span></p>
+            <div class="result-bottom"><div><div class="qr-wrap" id="result-qr"></div><div class="qr-cap">docs.enso.build</div></div><button id="btn-again" class="btn btn-again">&#8635; RUN AGAIN</button></div>
+          </section>
+
+          <div id="overlay" class="overlay hidden"></div>
         </div>
-        <div class="ticker" id="ticker" style="display:none"></div>
-      </div>
+      </section>
+    </div>
+    <footer class="statusbar" aria-hidden="true"><span class="remote">&#12299;</span><span>&#9095; main*</span><span>&#8635;</span><span class="status-spacer"></span><span>Ln 42, Col 18</span><span>Spaces: 2</span><span>UTF-8</span><span>{ } JavaScript</span><span>&#9889; Enso Mainnet</span></footer>
+  </main>
 
-      <div class="choices">
-        <button id="btn-send" class="btn btn-send">SEND IT<small id="send-sub">instant &middot; +2% speed bonus on a clean fill</small></button>
-        <button id="btn-sim" class="btn btn-sim">SIMULATE<small>Enso Quote Simulator &middot; 2s</small></button>
-      </div>
-    </section>
-
-    <!-- 5. Result -->
-    <section id="screen-result" class="screen">
-      <div class="result-label">FINAL PORTFOLIO</div>
-      <div class="result-value" id="result-value">$0</div>
-      <div class="result-eth" id="result-eth"></div>
-      <div class="result-rank" id="result-rank"></div>
-      <div class="result-swag" id="result-swag"></div>
-      <div class="history" id="result-history"></div>
-      <p class="takeaway">In production, simulation takes milliseconds and costs nothing.<br>There is no speed bonus for skipping it.</p>
-      <div class="result-bottom">
-        <div>
-          <div class="qr-wrap" id="result-qr"></div>
-          <div class="qr-cap">Enso Quote Simulator docs</div>
-        </div>
-        <button id="btn-again" class="btn btn-again">PLAY AGAIN</button>
-      </div>
-    </section>
-
-    <!-- Outcome / animation overlay -->
-    <div id="overlay" class="overlay hidden"></div>
-  </div>
-
-  <script src="js/config.js"></script>
-  <script src="js/engine.js"></script>
-  <script src="js/qr.js"></script>
-  <script src="js/store.js"></script>
-  <script src="js/bg.js"></script>
-  <script src="js/main.js"></script>
+  <script src="js/config.js"></script><script src="js/engine.js"></script><script src="js/qr.js"></script><script src="js/store.js"></script><script src="js/bg.js"></script><script src="js/main.js"></script>
 </body>
 </html>

@@ -180,6 +180,9 @@
 
   function toName() {
     $('input-name').value = '';
+    $('input-name').classList.remove('invalid');
+    $('input-name').removeAttribute('aria-invalid');
+    $('name-error').textContent = '';
     $('input-contact').value = '';
     $('input-contact').style.display = CONFIG.leadCapture === 'off' ? 'none' : '';
     show('screen-name');
@@ -189,12 +192,21 @@
   function startGame() {
     var name = $('input-name').value.trim().toUpperCase().slice(0, 14);
     var contact = $('input-contact').value.trim();
+    if (!name) {
+      $('input-name').classList.add('invalid');
+      $('input-name').setAttribute('aria-invalid', 'true');
+      $('name-error').textContent = 'ERROR: display name is required before execution.';
+      $('input-name').focus();
+      return;
+    }
     if (CONFIG.leadCapture === 'required' && !contact) {
       $('input-contact').focus();
       $('input-contact').placeholder = 'REQUIRED to enter the leaderboard';
       return;
     }
-    if (!name) name = 'ANON-' + String(Math.floor(Math.random() * 900) + 100);
+    $('input-name').classList.remove('invalid');
+    $('input-name').removeAttribute('aria-invalid');
+    $('name-error').textContent = '';
     disarmIdleReset();
     game = {
       name: name,
@@ -204,6 +216,7 @@
       history: [],
       remainingMs: 0,
       sendCount: 0,
+      stats: { sends: 0, sendHits: 0, dodges: 0, dodgedUsd: 0 },
       ts: Date.now(),
     };
     brief();
@@ -325,9 +338,10 @@
 
     if (action === 'send') {
       game.sendCount++;
+      game.stats.sends++;
       Sound.send();
       var res = Engine.resolveSend(game.value, roll, CONFIG);
-      Store.bumpStats({ sends: 1, sendHits: res.event === 'clean' ? 0 : 1 });
+      if (res.event !== 'clean') game.stats.sendHits++;
       overlay(
         '<div class="ov-icon">TX_BROADCAST</div>' +
         '<div class="ov-title">BROADCASTING...</div>' +
@@ -337,7 +351,10 @@
     } else {
       Sound.scan();
       var res2 = Engine.resolveSimulate(game.value, roll, CONFIG);
-      if (res2.caught) Store.bumpStats({ dodges: 1, dodgedUsd: Math.round(res2.dodgedUsd) });
+      if (res2.caught) {
+        game.stats.dodges++;
+        game.stats.dodgedUsd += Math.round(res2.dodgedUsd);
+      }
       runScan(function () { revealSimulate(res2, roll); });
     }
   }
@@ -448,19 +465,28 @@
 
   /* ---------- result ---------- */
 
-  function finish() {
+  async function finish() {
     clearTimers();
     hideOverlay();
     var score = Math.round(game.value);
-    var rank = Store.addEntry({
-      name: game.name,
-      score: score,
-      remainingMs: game.remainingMs,
-      sendCount: game.sendCount,
-      contact: game.contact || null,
-      ts: game.ts,
-    }, Engine.compareEntries);
-    Store.bumpStats({ plays: 1 });
+    var rank = null;
+    var saveError = false;
+    overlay('<div class="ov-icon">DB_WRITE</div><div class="ov-title">SAVING RUN...</div><div class="ov-body">Committing today\'s score to the local leaderboard.</div>');
+    try {
+      var saved = await Store.addEntry({
+        name: game.name,
+        score: score,
+        remainingMs: game.remainingMs,
+        sendCount: game.sendCount,
+        contact: game.contact || null,
+        ts: game.ts,
+      }, game.stats);
+      rank = saved.rank;
+    } catch (error) {
+      console.error(error);
+      saveError = true;
+    }
+    hideOverlay();
 
     show('screen-result');
 
@@ -478,7 +504,9 @@
     timers.push(countUp);
 
     $('result-eth').textContent = fmtEth(score, CONFIG.ethDisplayPrice) + ' · ' + (up ? fmtUsdSigned(score - CONFIG.startingUsd) + ' on the day' : fmtUsdSigned(score - CONFIG.startingUsd));
-    $('result-rank').innerHTML = '<span class="pos">#' + rank + '</span> on today’s leaderboard' + (rank === 1 ? ' — top score' : '');
+    $('result-rank').innerHTML = saveError
+      ? '<span class="bad">SCORE NOT SAVED — check the local server</span>'
+      : '<span class="pos">#' + rank + '</span> on today’s leaderboard' + (rank === 1 ? ' — top score' : '');
     $('result-swag').textContent = score >= CONFIG.swagThresholdUsd
       ? 'You finished ≥ $1M — claim your “I simulate before I sign” swag at the desk.'
       : '';
@@ -506,6 +534,13 @@
   $('btn-start').addEventListener('click', function () { Sound.unlock(); toName(); });
   $('btn-begin').addEventListener('click', startGame);
   $('input-name').addEventListener('keydown', function (e) { if (e.key === 'Enter') startGame(); });
+  $('input-name').addEventListener('input', function () {
+    if (this.value.trim()) {
+      this.classList.remove('invalid');
+      this.removeAttribute('aria-invalid');
+      $('name-error').textContent = '';
+    }
+  });
   $('btn-send').addEventListener('click', function () { choose('send', false); });
   $('btn-sim').addEventListener('click', function () { choose('sim', false); });
   $('btn-again').addEventListener('click', function () { disarmIdleReset(); toName(); });

@@ -1,62 +1,32 @@
-/*
- * Daily leaderboard + stand stats, backed by localStorage.
- * Keys are date-scoped, so the board resets itself at midnight local time.
- * Shared by the game (index.html) and the second screen (leaderboard.html).
- */
+/* Daily leaderboard API client. The Node server persists state to data/leaderboard.json. */
 (function (root) {
-  function todayKey() {
-    var d = new Date();
-    var mm = String(d.getMonth() + 1).padStart(2, '0');
-    var dd = String(d.getDate()).padStart(2, '0');
-    return d.getFullYear() + '-' + mm + '-' + dd;
-  }
+  'use strict';
 
-  function read(key, fallback) {
-    try {
-      var raw = localStorage.getItem(key);
-      return raw ? JSON.parse(raw) : fallback;
-    } catch (e) {
-      return fallback;
-    }
-  }
+  var fallback = { board: [], stats: { plays: 0, sends: 0, sendHits: 0, dodges: 0, dodgedUsd: 0 } };
 
-  function write(key, value) {
-    try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* private mode */ }
+  function request(url, options) {
+    return fetch(url, options).then(function (response) {
+      if (!response.ok) return response.json().catch(function () { return {}; }).then(function (body) {
+        throw new Error(body.error || 'Leaderboard request failed');
+      });
+      return response.json();
+    });
   }
 
   var Store = {
-    todayKey: todayKey,
-
-    boardKey: function () { return 'simorsend:board:' + todayKey(); },
-    statsKey: function () { return 'simorsend:stats:' + todayKey(); },
-
-    getBoard: function () {
-      return read(this.boardKey(), []);
+    getState: function () {
+      return request('/api/leaderboard').catch(function (error) {
+        console.warn(error.message);
+        return fallback;
+      });
     },
 
-    /*
-     * Insert a finished game and return its 1-based rank for today.
-     * entry: { name, score, remainingMs, sendCount, contact, ts }
-     */
-    addEntry: function (entry, compare) {
-      var board = this.getBoard();
-      board.push(entry);
-      board.sort(compare);
-      write(this.boardKey(), board);
-      for (var i = 0; i < board.length; i++) {
-        if (board[i].ts === entry.ts && board[i].name === entry.name) return i + 1;
-      }
-      return board.length;
-    },
-
-    getStats: function () {
-      return read(this.statsKey(), { plays: 0, sends: 0, sendHits: 0, dodges: 0, dodgedUsd: 0 });
-    },
-
-    bumpStats: function (patch) {
-      var s = this.getStats();
-      Object.keys(patch).forEach(function (k) { s[k] = (s[k] || 0) + patch[k]; });
-      write(this.statsKey(), s);
+    addEntry: function (entry, stats) {
+      return request('/api/entries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ entry: entry, stats: stats }),
+      });
     },
   };
 
