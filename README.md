@@ -2,33 +2,35 @@
 
 Conference stand game for the Enso booth, built from Hector's June 2026 concept doc.
 Players get $1,000,000 USDT to move into ETH across three rapid trades. Before each
-trade: **SEND IT** (blind, +2% speed bonus on a clean fill, 50% chance a failure event
+trade: **SEND IT** (blind, +2% speed bonus on a clean fill, 90% chance a failure event
 hits) or **SIMULATE** (Enso Quote Simulator catches the failure first — what you see
 is what you get).
 
-No build step, no dependencies, fully offline. Vanilla HTML/CSS/JS.
+No build step or third-party runtime dependencies. The vanilla frontend is served by a
+small Node backend that persists the daily leaderboard to a local JSON database.
 
 ## Run it
 
 ```bash
 cd game
-python3 -m http.server 8741
+npm start
 ```
 
 - **Game (touchscreen / iPad):** http://localhost:8741/
 - **Leaderboard (second screen):** http://localhost:8741/leaderboard.html
 
-Both pages share state through `localStorage`, so they must run in the **same browser
-profile on the same machine** (two windows / two displays). On the iPad, add the game
+Both pages use the same local backend, so the game and leaderboard can run in separate
+browser windows or devices that can reach the kiosk computer. On the iPad, add the game
 to the Home Screen for fullscreen, or use Safari with Guided Access for kiosk lockdown.
 
-The board resets itself at midnight local time (date-scoped storage keys).
+The board resets itself at midnight local time. Data is stored in
+`data/leaderboard.json`; the `data/` directory is ignored by Git.
 
 ## Tuning per event / per day
 
 Everything marketing may want to touch is in [js/config.js](js/config.js):
 
-- Event odds (clean / overquote / decay / malicious / policy) — currently **50/18/14/10/8**
+- Event odds (clean / overquote / decay / malicious / policy) — currently **10/32/25/18/15**
 - Speed bonus (+2%) and route-optimisation bonus (0.5–1.5%, 30% chance)
 - Severity ranges, number of rounds, per-round timer (15s)
 - Quote-decay pressure per round (visual urgency device; outcomes come from the dice)
@@ -43,9 +45,13 @@ After changing odds/severities, re-verify the maths:
 node scripts/montecarlo.js
 ```
 
-200k runs per strategy. With the shipped config it reproduces the doc's table:
-simulate-every-round avg ≈ $1,009k (never loses), send-every-round avg ≈ $813k
-(87.5% hit by ≥1 event, ~21.6% finish above $1M), perfect-luck send $1,061,208 at 12.5%.
+200k runs per strategy. With the shipped config, simulate-every-round averages
+about $1,009k and never loses. Send-every-round averages about $644k, 99.9% of
+runs hit at least one failure, about 0.7% finish above $1M, and perfect-luck
+send finishes at $1,061,208 with 0.1% probability.
+
+`SIMULATE` has a hard engine-level floor: its resolved portfolio can equal the
+pre-trade value or increase, but can never decrease.
 
 ## Booth-staff demo hook
 
@@ -67,7 +73,8 @@ SIMORSEND.forceNext('malicious')   // also: overquote | decay | policy | clean |
 | [leaderboard.html](leaderboard.html) + [js/board.js](js/board.js) | Second screen: live top-10, attract taglines, stand stats |
 | [js/config.js](js/config.js) | Every tunable parameter |
 | [js/engine.js](js/engine.js) | Pure game maths (dice, payouts, ranking) — shared with the verifier |
-| [js/store.js](js/store.js) | Daily-reset leaderboard + stats in localStorage |
+| [server.js](server.js) | Static server + daily JSON leaderboard API |
+| [js/store.js](js/store.js) | Browser client for the leaderboard API |
 | [js/qr.js](js/qr.js) | Dependency-free QR encoder for the docs link |
 | [js/bg.js](js/bg.js) | Ambient routing-graph background |
 | [scripts/montecarlo.js](scripts/montecarlo.js) | Reproduces the concept doc's expected-value table |

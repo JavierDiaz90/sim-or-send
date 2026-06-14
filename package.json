@@ -1,0 +1,10 @@
+{
+  "name": "sim-or-send",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SIM OR SEND kiosk game with a local daily leaderboard",
+  "scripts": {
+    "start": "node server.js",
+    "verify:math": "node scripts/montecarlo.js"
+  }
+}

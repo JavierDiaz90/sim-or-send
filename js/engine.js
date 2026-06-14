@@ -60,12 +60,15 @@
   function resolveSimulate(value, roll, cfg) {
     var caught = roll.event === 'clean' ? null : roll.event;
     var dodgedUsd = caught ? value * (roll.severityPct / 100) : 0;
+    var requestedPct = Number(roll.routeOptPct);
+    var safePct = Number.isFinite(requestedPct) ? Math.max(0, requestedPct) : 0;
+    var resolvedValue = Math.max(value, value * (1 + safePct / 100));
     return {
-      value: value * (1 + roll.routeOptPct / 100),
+      value: resolvedValue,
       event: 'sim',
       caught: caught,
       dodgedUsd: dodgedUsd,
-      pct: roll.routeOptPct,
+      pct: value > 0 ? ((resolvedValue / value) - 1) * 100 : 0,
     };
   }
 

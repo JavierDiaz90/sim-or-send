@@ -5,10 +5,10 @@
  *
  *   node scripts/montecarlo.js
  *
- * Expected (doc figures, current config):
+ * Expected (current config; Monte Carlo values vary slightly):
  *   Simulate every round  avg ~$1,009,000   median ~$1,008,500   never < $1M   max ~$1,045,700
- *   Send every round      avg ~$813,000     median ~$903,900     ~87.5% hit    ~21.6% finish > $1M
- *   Send + perfect luck   $1,061,200        probability 12.5%
+ *   Send every round      avg ~$644,000     median ~$737,000     ~99.9% hit    ~0.7% finish > $1M
+ *   Send + perfect luck   $1,061,200        probability 0.1%
  */
 const Engine = require('../js/engine.js');
 const CONFIG = require('../js/config.js');
@@ -59,6 +59,9 @@ if (oddsSum !== 100) {
 console.log(`SIM OR SEND — Monte Carlo (${RUNS.toLocaleString()} runs per strategy)\n`);
 
 const sim = playAll('simulate');
+if (sim.min < CONFIG.startingUsd) {
+  throw new Error(`SIMULATE invariant failed: minimum ${usd(sim.min)} is below starting value`);
+}
 console.log('Simulate every round');
 console.log(`  avg ${usd(sim.avg)}   median ${usd(sim.median)}   min ${usd(sim.min)}   max ${usd(sim.max)}`);
 
