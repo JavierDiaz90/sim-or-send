@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>SIM OR SEND — The $1M Challenge</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="bg" aria-hidden="true">
+    <div class="bg-grid"></div>
+    <canvas id="bg-net"></canvas>
+    <div class="bg-vignette"></div>
+  </div>
+  <div id="app">
+
+    <!-- 1. Attract loop -->
+    <section id="screen-attract" class="screen">
+      <div class="brand">E N S O</div>
+      <h1 class="mega"><span class="w-sim">SIM</span><span class="or">or</span><span class="w-send">SEND</span></h1>
+      <p class="attract-q">Would you bet $1M that the quote you see is the trade you get?</p>
+      <button id="btn-start" class="btn btn-cta">TAP TO PLAY</button>
+      <p class="attract-sub">3 trades &middot; under 60 seconds &middot; top score today wins the prize</p>
+    </section>
+
+    <!-- 2. Name entry -->
+    <section id="screen-name" class="screen">
+      <h2>Who&rsquo;s trading?</h2>
+      <input id="input-name" class="field" maxlength="14" placeholder="DISPLAY NAME" autocomplete="off" autocorrect="off" spellcheck="false">
+      <input id="input-contact" class="field contact" maxlength="60" placeholder="contact handle optional" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      <button id="btn-begin" class="btn btn-cta">START &middot; $1,000,000</button>
+    </section>
+
+    <!-- 3. Brief -->
+    <section id="screen-brief" class="screen">
+      <p class="brief-line">Your fund needs <b>$1M USDT</b> moved into <b>ETH</b>.</p>
+      <p class="brief-line">Three trades. Clock is running.</p>
+      <div class="brief-count" id="brief-count">5</div>
+    </section>
+
+    <!-- 4. Round (reused for all three) -->
+    <section id="screen-round" class="screen">
+      <div class="timer-track"><div id="round-timer-bar"></div></div>
+      <header class="hud">
+        <div class="hud-cell"><label>PORTFOLIO</label><span id="hud-value">$1,000,000</span></div>
+        <div class="hud-round" id="hud-round">ROUND 1 / 3</div>
+        <div class="hud-cell"><label>CLOCK</label><span id="hud-clock">15.0</span></div>
+      </header>
+
+      <h3 id="round-title">MAINNET SWAP</h3>
+
+      <div class="quote-card">
+        <div class="pair">
+          <span class="from" id="q-from">1,000,000 USDT</span>
+          <span class="arrow">&rarr;</span>
+          <span class="to" id="q-out">238.10 ETH</span>
+        </div>
+        <div class="qrow"><span class="k">Rate</span><span class="v" id="q-rate"></span></div>
+        <div class="qrow"><span class="k">Expected output</span><span class="v" id="q-expected"></span></div>
+        <div class="qrow"><span class="k">Network cost</span><span class="v" id="q-gas"></span></div>
+        <div class="qrow"><span class="k">Max slippage</span><span class="v">0.50%</span></div>
+        <div class="route-chips" id="route-chips"></div>
+        <div class="decay-wrap hidden" id="decay-wrap">
+          <span>QUOTE EXPIRES <span id="decay-s">10.0</span>s</span>
+          <div class="decay-bar-track"><div id="decay-bar"></div></div>
+        </div>
+        <div class="ticker" id="ticker" style="display:none"></div>
+      </div>
+
+      <div class="choices">
+        <button id="btn-send" class="btn btn-send">SEND IT<small id="send-sub">instant &middot; +2% speed bonus on a clean fill</small></button>
+        <button id="btn-sim" class="btn btn-sim">SIMULATE<small>Enso Quote Simulator &middot; 2s</small></button>
+      </div>
+    </section>
+
+    <!-- 5. Result -->
+    <section id="screen-result" class="screen">
+      <div class="result-label">FINAL PORTFOLIO</div>
+      <div class="result-value" id="result-value">$0</div>
+      <div class="result-eth" id="result-eth"></div>
+      <div class="result-rank" id="result-rank"></div>
+      <div class="result-swag" id="result-swag"></div>
+      <div class="history" id="result-history"></div>
+      <p class="takeaway">In production, simulation takes milliseconds and costs nothing.<br>There is no speed bonus for skipping it.</p>
+      <div class="result-bottom">
+        <div>
+          <div class="qr-wrap" id="result-qr"></div>
+          <div class="qr-cap">Enso Quote Simulator docs</div>
+        </div>
+        <button id="btn-again" class="btn btn-again">PLAY AGAIN</button>
+      </div>
+    </section>
+
+    <!-- Outcome / animation overlay -->
+    <div id="overlay" class="overlay hidden"></div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/qr.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/bg.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

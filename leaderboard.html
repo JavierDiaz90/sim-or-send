@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SIM OR SEND — Leaderboard</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="board-page">
+  <div id="bg" aria-hidden="true">
+    <div class="bg-grid"></div>
+    <canvas id="bg-net"></canvas>
+    <div class="bg-vignette"></div>
+  </div>
+  <div class="board-wrap">
+    <div class="board-head">
+      <h1><span class="w-sim">SIM</span> or <span class="w-send">SEND</span> — today’s board</h1>
+      <div class="board-date" id="board-date"></div>
+    </div>
+    <div class="board-attract" id="board-attract"></div>
+    <div class="board-table" id="board-table"></div>
+    <div class="board-stats">
+      <div class="bstat"><div class="n" id="stat-plays">0</div><div class="l">PLAYS TODAY</div></div>
+      <div class="bstat"><div class="n" id="stat-rekt">—</div><div class="l">BLIND SENDS HIT</div></div>
+      <div class="bstat"><div class="n" id="stat-dodged">$0</div><div class="l">LOSSES DODGED VIA SIMULATION</div></div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/bg.js"></script>
+  <script src="js/board.js"></script>
+</body>
+</html>
