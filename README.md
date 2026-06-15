@@ -26,6 +26,27 @@ to the Home Screen for fullscreen, or use Safari with Guided Access for kiosk lo
 The board resets itself at midnight local time. Data is stored in
 `data/leaderboard.json`; the `data/` directory is ignored by Git.
 
+## Hosted Netlify + Supabase mode
+
+The same frontend can run on Netlify with Supabase as the persistent database.
+Netlify Functions keep the Supabase service role key out of browser JavaScript.
+
+1. Create a Supabase project.
+2. Open Supabase SQL Editor and run [supabase/schema.sql](supabase/schema.sql).
+3. In Netlify, link this GitHub repository and set:
+   - Build command: leave empty
+   - Publish directory: `.`
+   - Functions directory: `netlify/functions` (also declared in `netlify.toml`)
+4. Add these Netlify environment variables:
+   - `SUPABASE_URL`
+   - `SUPABASE_SERVICE_ROLE_KEY`
+   - `SUPABASE_TABLE=leaderboard_entries`
+   - `LEADERBOARD_TIME_ZONE=Europe/Paris`
+5. Deploy from the `main` branch.
+
+Do not expose `SUPABASE_SERVICE_ROLE_KEY` in frontend code. It belongs only in
+Netlify environment variables.
+
 ## Tuning per event / per day
 
 Everything marketing may want to touch is in [js/config.js](js/config.js):
@@ -75,6 +96,8 @@ SIMORSEND.forceNext('malicious')   // also: overquote | decay | policy | clean |
 | [js/engine.js](js/engine.js) | Pure game maths (dice, payouts, ranking) — shared with the verifier |
 | [server.js](server.js) | Static server + daily JSON leaderboard API |
 | [js/store.js](js/store.js) | Browser client for the leaderboard API |
+| [netlify/functions](netlify/functions) | Hosted API routes for Supabase-backed deploys |
+| [supabase/schema.sql](supabase/schema.sql) | Supabase table schema for hosted leaderboards |
 | [js/qr.js](js/qr.js) | Dependency-free QR encoder for the docs link |
 | [js/bg.js](js/bg.js) | Ambient routing-graph background |
 | [scripts/montecarlo.js](scripts/montecarlo.js) | Reproduces the concept doc's expected-value table |
