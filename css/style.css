@@ -60,7 +60,7 @@ button, input { font: inherit; }
 .tab { display: block; min-width: 175px; height: 35px; padding: 9px 12px; border-right: 1px solid #292929; background: #181818; color: #999; font-size: 12px; white-space: nowrap; text-decoration: none; }.tab:hover { color: #eee; background: #202020; }.tab.active { background: var(--editor); color: #eee; border-top: 1px solid var(--cyan); }.tab b { float: right; font-size: 15px; font-weight: 400; }
 .breadcrumbs { background: var(--editor); padding: 6px 14px; color: #999; font-size: 12px; border-bottom: 1px solid var(--line-soft); }.purple { color: var(--purple); }
 
-.terminal-panel { min-height: 0; position: relative; overflow: hidden; background: var(--terminal); font-family: var(--mono); }
+.terminal-panel { grid-row: 3; min-height: 0; position: relative; overflow: hidden; background: var(--terminal); font-family: var(--mono); }
 .terminal-panel::before { content: ""; position: absolute; inset: 60px 0 0; pointer-events: none; opacity: .16; background: repeating-linear-gradient(0deg, transparent 0 3px, rgba(255,255,255,.025) 3px 4px); }
 .terminal-head { height: 32px; padding: 0 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); background: #0d1117; color: #999; font: 11px var(--ui); }
 .terminal-tab { display: inline-block; height: 32px; padding: 9px 3px; margin-right: 20px; }.terminal-tab.active { color: #fff; border-bottom: 1px solid #fff; }.terminal-tab b { border-radius: 10px; background: #555; padding: 1px 4px; }
