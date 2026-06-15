@@ -42,10 +42,26 @@ Netlify Functions keep the Supabase service role key out of browser JavaScript.
    - `SUPABASE_SERVICE_ROLE_KEY`
    - `SUPABASE_TABLE=leaderboard_entries`
    - `LEADERBOARD_TIME_ZONE=Europe/Paris`
+   - `ADMIN_RESET_TOKEN` (any long random password for clearing tests)
 5. Deploy from the `main` branch.
 
 Do not expose `SUPABASE_SERVICE_ROLE_KEY` in frontend code. It belongs only in
 Netlify environment variables.
+
+To clear today's hosted leaderboard after testing, call the protected reset endpoint:
+
+```bash
+node scripts/reset-today.js https://simorsend.netlify.app YOUR_ADMIN_RESET_TOKEN
+```
+
+Or with curl:
+
+```bash
+curl -X POST https://simorsend.netlify.app/api/reset \
+  -H "x-admin-token: YOUR_ADMIN_RESET_TOKEN"
+```
+
+This deletes only rows for today's leaderboard date.
 
 ## Tuning per event / per day
 
@@ -101,6 +117,7 @@ SIMORSEND.forceNext('malicious')   // also: overquote | decay | policy | clean |
 | [js/qr.js](js/qr.js) | Dependency-free QR encoder for the docs link |
 | [js/bg.js](js/bg.js) | Ambient routing-graph background |
 | [scripts/montecarlo.js](scripts/montecarlo.js) | Reproduces the concept doc's expected-value table |
+| [scripts/reset-today.js](scripts/reset-today.js) | Clears today's hosted leaderboard with an admin token |
 | [scripts/verify_qr.py](scripts/verify_qr.py) | Diffs js/qr.js against the python `qrcode` reference lib |
 
 ## Game design notes

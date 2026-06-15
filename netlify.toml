@@ -11,3 +11,8 @@
   from = "/api/entries"
   to = "/.netlify/functions/entries"
   status = 200
+
+[[redirects]]
+  from = "/api/reset"
+  to = "/.netlify/functions/reset"
+  status = 200
