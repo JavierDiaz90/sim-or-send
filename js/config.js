@@ -14,8 +14,8 @@
 
     startingUsd: 1000000,
     rounds: 3,
-    roundSeconds: 15,        // decision window per round
-    briefSeconds: 5,
+    roundSeconds: 30,        // decision window per round
+    briefSeconds: 15,
     idleResetSeconds: 45,    // result/name screens fall back to attract loop
 
     // SEND IT dice roll, per round. Must sum to 100.

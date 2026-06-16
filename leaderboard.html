@@ -4,7 +4,7 @@
 <body class="board-page">
   <div id="bg" aria-hidden="true"><div class="bg-grid"></div><canvas id="bg-net"></canvas><div class="bg-vignette"></div></div>
   <main class="workbench">
-    <header class="titlebar"><div class="traffic"><i></i><i></i><i></i></div><div class="titlebar-nav">File&nbsp;&nbsp; Edit&nbsp;&nbsp; Selection&nbsp;&nbsp; View&nbsp;&nbsp; Go&nbsp;&nbsp; Run&nbsp;&nbsp; Terminal&nbsp;&nbsp; Help</div><div class="command-center"><span>&#128269;</span> leaderboard.log</div><div class="layout-icons">&#9645;&nbsp; &#9638;&nbsp; &#9635;</div></header>
+    <header class="titlebar"><div class="traffic"><i></i><i></i><i></i></div><div class="titlebar-nav">File&nbsp;&nbsp; Edit&nbsp;&nbsp; Selection&nbsp;&nbsp; View&nbsp;&nbsp; Go&nbsp;&nbsp; Run&nbsp;&nbsp; Terminal&nbsp;&nbsp; Help</div><div class="command-center"><img class="command-logo" src="assets/enso-wordmark.png" alt="" aria-hidden="true"><span>&#128269;</span> leaderboard.log</div><div class="layout-icons">&#9645;&nbsp; &#9638;&nbsp; &#9635;</div></header>
     <div class="workspace">
       <aside class="activitybar" aria-hidden="true"><div class="activity">&#128196;</div><div class="activity active">&#128269;</div><div class="activity branch">&#9095;</div><div class="activity">&#9655;</div><div class="activity-spacer"></div><div class="activity">&#9881;</div></aside>
       <aside class="sidebar board-sidebar" aria-hidden="true"><div class="side-title">RUN AND DEBUG <span>...</span></div><div class="tree-head">&#9662; WATCH</div><div class="watch"><span>playsToday</span><b id="watch-plays">live</b></div><div class="watch"><span>network</span><b>mainnet</b></div><div class="watch"><span>mode</span><b>challenge</b></div><div class="tree-head lower">&#9662; CALL STACK</div><div class="tree file active"><span class="green">&#9655;</span> leaderboard.poll()</div><div class="tree-head">&#9662; BREAKPOINTS</div><div class="tree file"><span>&#9745;</span> Caught Exceptions</div></aside>
@@ -13,7 +13,7 @@
         <div class="breadcrumbs">sim-or-send &gt; logs &gt; leaderboard.log</div>
         <div class="board-wrap">
           <div class="board-console-line"><span class="dim">[watch]</span> tail -f ./data/leaderboard.log <span class="cursor">_</span></div>
-          <div class="board-head"><h1><span class="w-sim">SIM</span> / <span class="w-send">SEND</span> CHALLENGE</h1><div class="board-date" id="board-date"></div></div>
+          <div class="board-head"><div class="board-title"><img class="enso-wordmark board-logo" src="assets/enso-wordmark.png" alt="Enso"><h1><span class="w-sim">SIM</span> / <span class="w-send">SEND</span> CHALLENGE</h1></div><div class="board-date" id="board-date"></div></div>
           <div class="board-attract" id="board-attract"></div>
           <div class="table-head"><span>RANK</span><span>PLAYER / STRATEGY</span><span>TIME</span><span>FINAL VALUE</span></div>
           <div class="board-table" id="board-table"></div>

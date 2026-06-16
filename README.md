@@ -69,7 +69,7 @@ Everything marketing may want to touch is in [js/config.js](js/config.js):
 
 - Event odds (clean / overquote / decay / malicious / policy) — currently **10/32/25/18/15**
 - Speed bonus (+2%) and route-optimisation bonus (0.5–1.5%, 30% chance)
-- Severity ranges, number of rounds, per-round timer (15s)
+- Severity ranges, number of rounds, per-round timer (30s)
 - Quote-decay pressure per round (visual urgency device; outcomes come from the dice)
 - Malicious drain: **50%** (the doc's open decision — 100% is more dramatic, 50% keeps
   players in the game; flip `severity.maliciousDrainPct`)
