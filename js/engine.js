@@ -15,6 +15,10 @@
     return range[0] + rng() * (range[1] - range[0]);
   }
 
+  function severityValue(rng, setting) {
+    return Array.isArray(setting) ? uniform(rng, setting) : setting;
+  }
+
   /*
    * Roll the hidden dice for one round. The same roll is used whether the
    * player sends or simulates — the simulator "catches" the fate the sender
@@ -34,8 +38,8 @@
     var severityPct = 0;
     if (event === 'overquote') severityPct = uniform(rng, cfg.severity.overquote);
     else if (event === 'decay') severityPct = uniform(rng, cfg.severity.decay);
-    else if (event === 'malicious') severityPct = cfg.severity.maliciousDrainPct;
-    else if (event === 'policy') severityPct = cfg.severity.policyFreezePct;
+    else if (event === 'malicious') severityPct = severityValue(rng, cfg.severity.maliciousDrainPct);
+    else if (event === 'policy') severityPct = severityValue(rng, cfg.severity.policyFreezePct);
 
     var routeOptPct = 0;
     if (rng() * 100 < cfg.routeOpt.chancePct) routeOptPct = uniform(rng, cfg.routeOpt.range);

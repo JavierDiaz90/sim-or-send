@@ -116,12 +116,13 @@
     var ev = forcedEvent;
     forcedEvent = null;
     var mid = function (range) { return (range[0] + range[1]) / 2; };
+    var valueOf = function (setting) { return Array.isArray(setting) ? mid(setting) : setting; };
     var roll = { event: ev, severityPct: 0, routeOptPct: 0 };
     if (ev === 'opt') { roll.event = 'clean'; roll.routeOptPct = mid(CONFIG.routeOpt.range); }
     else if (ev === 'overquote') roll.severityPct = mid(CONFIG.severity.overquote);
     else if (ev === 'decay') roll.severityPct = mid(CONFIG.severity.decay);
-    else if (ev === 'malicious') roll.severityPct = CONFIG.severity.maliciousDrainPct;
-    else if (ev === 'policy') roll.severityPct = CONFIG.severity.policyFreezePct;
+    else if (ev === 'malicious') roll.severityPct = valueOf(CONFIG.severity.maliciousDrainPct);
+    else if (ev === 'policy') roll.severityPct = valueOf(CONFIG.severity.policyFreezePct);
     return roll;
   }
 
@@ -453,10 +454,12 @@
       var parts = copy.caught(roll.severityPct, res.dodgedUsd).split(' — ');
       Sound.alarm();
       outcomeOverlay(
-        '<div class="ov-icon">' + copy.icon + '</div>' +
-        '<div class="ov-title bad">ALERT: ' + parts[0] + '</div>' +
-        '<div class="ov-body">' + parts.slice(1).join(' — ') + '</div>',
-        'flash-red', 3600, applyAndContinue
+        '<div class="shield-badge" aria-hidden="true"><img src="assets/shield-check.svg" alt=""></div>' +
+        '<div class="ov-icon">' + copy.icon + '_BLOCKED</div>' +
+        '<div class="ov-title good">SHIELDED BY SIMULATION</div>' +
+        '<div class="ov-body"><b>' + parts[0] + '</b> blocked before signing. ' + parts.slice(1).join(' - ') + '</div>' +
+        '<div class="ov-delta good">PROTECTED ' + fmtUsd(res.dodgedUsd) + '</div>',
+        'shielded flash-green', 4600, applyAndContinue
       );
     } else {
       applyAndContinue();
@@ -520,7 +523,11 @@
     }).join('');
 
     try {
-      $('result-qr').innerHTML = QR.svg(CONFIG.docsUrl, 140);
+      if (CONFIG.docsQrImage) {
+        $('result-qr').innerHTML = '<img src="' + CONFIG.docsQrImage + '" alt="Scan for Enso docs">';
+      } else {
+        $('result-qr').innerHTML = QR.svg(CONFIG.docsUrl, 140);
+      }
     } catch (e) {
       $('result-qr').outerHTML = '<div class="qr-cap">' + CONFIG.docsUrl + '</div>';
     }

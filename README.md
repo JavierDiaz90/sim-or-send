@@ -71,8 +71,8 @@ Everything marketing may want to touch is in [js/config.js](js/config.js):
 - Speed bonus (+2%) and route-optimisation bonus (0.5–1.5%, 30% chance)
 - Severity ranges, number of rounds, per-round timer (30s)
 - Quote-decay pressure per round (visual urgency device; outcomes come from the dice)
-- Malicious drain: **50%** (the doc's open decision — 100% is more dramatic, 50% keeps
-  players in the game; flip `severity.maliciousDrainPct`)
+- Malicious drain: randomized around **43–57%** so losses feel like live execution
+  rather than scripted round numbers; tune `severity.maliciousDrainPct`
 - Lead capture: `'optional'` (or `'off'` / `'required'`) — email/Telegram for the daily prize
 - `docsUrl` — the QR code target on the result screen
 
@@ -83,7 +83,7 @@ node scripts/montecarlo.js
 ```
 
 200k runs per strategy. With the shipped config, simulate-every-round averages
-about $1,009k and never loses. Send-every-round averages about $644k, 99.9% of
+about $1,009k and never loses. Send-every-round averages about $642k, 99.9% of
 runs hit at least one failure, about 0.7% finish above $1M, and perfect-luck
 send finishes at $1,061,208 with 0.1% probability.
 
@@ -135,6 +135,6 @@ SIMORSEND.forceNext('malicious')   // also: overquote | decay | policy | clean |
 ## Open decisions (doc) → what's shipped
 
 - **Name:** SIM OR SEND (the doc's recommendation)
-- **Malicious drain:** 50% (config flag to change)
+- **Malicious drain:** randomized 43–57% range (config flag to change)
 - **Lead capture:** optional field at name entry, stored with the board entry
 - Prize tiering: result screen highlights the daily #1; tiering still up to the booth team

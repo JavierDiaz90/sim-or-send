@@ -15,7 +15,7 @@
     startingUsd: 1000000,
     rounds: 3,
     roundSeconds: 30,        // decision window per round
-    briefSeconds: 15,
+    briefSeconds: 10,
     idleResetSeconds: 45,    // result/name screens fall back to attract loop
 
     // SEND IT dice roll, per round. Must sum to 100.
@@ -31,8 +31,8 @@
     severity: {
       overquote: [3, 8],     // receive 3–8% less than quoted
       decay: [2, 5],         // stale route, 2–5% less
-      maliciousDrainPct: 50, // open decision in doc: 50 keeps players in the game, 100 is more dramatic
-      policyFreezePct: 15,   // funds frozen at a sanctioned venue
+      maliciousDrainPct: [43, 57], // randomised drain keeps losses from feeling scripted
+      policyFreezePct: [11, 19],   // funds frozen at a sanctioned venue
     },
 
     speedBonusPct: 2,        // clean SEND IT fill — "first in the block"
@@ -42,7 +42,7 @@
       chancePct: 30,
       range: [0.5, 1.5],     // percent improvement when a better path is found
     },
-    simulateScanMs: 2000,    // scan animation length
+    simulateScanMs: 3400,    // scan animation length
 
     // Visual quote-decay pressure per round (display only — outcomes come from the dice).
     // Seconds until the on-screen quote "expires" and refreshes slightly worse.
@@ -63,7 +63,8 @@
     swagThresholdUsd: 1000000, // finish >= $1M -> "I simulate before I sign" swag
     leadCapture: 'optional',   // 'off' | 'optional' | 'required' (email/Telegram for prize contact)
 
-    docsUrl: 'https://docs.enso.build', // QR target on the result screen
+    docsUrl: 'https://docs.enso.build', // caption/fallback for the result screen QR
+    docsQrImage: 'assets/docs-qr.png',
     sound: true,
   };
 });
