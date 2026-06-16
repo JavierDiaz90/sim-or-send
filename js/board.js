@@ -40,10 +40,11 @@
         table.innerHTML = '<div class="board-empty">No runs yet today — be the first on the board.</div>';
       } else {
         table.innerHTML = board.map(function (e, i) {
+          var rank = i + 1;
           var up = e.score >= CONFIG.startingUsd;
           var tag = e.sendCount === 0 ? 'simulated every trade' : 'sent blind x' + e.sendCount;
-          return '<div class="board-row' + (i === 0 ? ' top1' : '') + '">' +
-            '<span class="rk">' + (i + 1) + '</span>' +
+          return '<div class="board-row' + (rank <= 3 ? ' top' + rank : '') + '">' +
+            '<span class="rk">#' + rank + '</span>' +
             '<span class="nm">' + escapeHtml(e.name) + ' <span class="tag">' + tag + '</span></span>' +
             '<span class="tag">' + ((e.remainingMs || 0) / 1000).toFixed(1) + 's left</span>' +
             '<span class="sc ' + (up ? 'up' : 'down') + '">' + fmtUsd(e.score) + '</span>' +

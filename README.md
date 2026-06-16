@@ -107,7 +107,7 @@ SIMORSEND.forceNext('malicious')   // also: overquote | decay | policy | clean |
 | File | What it is |
 | --- | --- |
 | [index.html](index.html) + [js/main.js](js/main.js) | The kiosk game: attract → name → brief → 3 rounds → result |
-| [leaderboard.html](leaderboard.html) + [js/board.js](js/board.js) | Second screen: live top-10, attract taglines, stand stats |
+| [leaderboard.html](leaderboard.html) + [js/board.js](js/board.js) | Second screen: live top-30, attract taglines, stand stats |
 | [js/config.js](js/config.js) | Every tunable parameter |
 | [js/engine.js](js/engine.js) | Pure game maths (dice, payouts, ranking) — shared with the verifier |
 | [server.js](server.js) | Static server + daily JSON leaderboard API |

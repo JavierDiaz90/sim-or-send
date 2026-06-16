@@ -59,7 +59,7 @@
     gasUsdByRound: [14.2, 38.5, 22.4],
 
     // Leaderboard & prizes
-    leaderboardSize: 10,
+    leaderboardSize: 30,
     swagThresholdUsd: 1000000, // finish >= $1M -> "I simulate before I sign" swag
     leadCapture: 'optional',   // 'off' | 'optional' | 'required' (email/Telegram for prize contact)
 
