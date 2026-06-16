@@ -22,4 +22,4 @@ create index if not exists leaderboard_entries_day_rank_idx
 alter table public.leaderboard_entries enable row level security;
 
 comment on table public.leaderboard_entries is
-  'SIM OR SEND daily leaderboard entries. Access through Netlify Functions using the Supabase service role key.';
+  'SIM OR SEND leaderboard entries. Access through Netlify Functions using the Supabase service role key.';

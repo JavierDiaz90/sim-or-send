@@ -5,11 +5,10 @@ const {
   cleanEntry,
   cleanStats,
   json,
-  readTodayRows,
+  readLeaderboardRows,
   statsFromRows,
   supabaseFetch,
   supabaseHeaders,
-  todayKey,
   toPublicEntry,
 } = require('./lib/supabase');
 
@@ -30,14 +29,14 @@ exports.handler = async function handler(event) {
       body: JSON.stringify(insertPayload),
     });
 
-    const rows = await readTodayRows();
+    const rows = await readLeaderboardRows();
     const insertedId = inserted && inserted[0] && inserted[0].id;
     const rank = rows.findIndex(row => row.id === insertedId) + 1;
 
     return json(201, {
       rank,
       state: {
-        date: todayKey(),
+        date: 'all-time',
         board: rows.map(toPublicEntry),
         stats: statsFromRows(rows),
       },

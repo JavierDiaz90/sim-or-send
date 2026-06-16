@@ -1,4 +1,4 @@
-/* Daily leaderboard API client. The Node server persists state to data/leaderboard.json. */
+/* Leaderboard API client. The Node server persists state to data/leaderboard.json. */
 (function (root) {
   'use strict';
 

@@ -474,7 +474,7 @@
     var score = Math.round(game.value);
     var rank = null;
     var saveError = false;
-    overlay('<div class="ov-icon">DB_WRITE</div><div class="ov-title">SAVING RUN...</div><div class="ov-body">Committing today\'s score to the local leaderboard.</div>');
+    overlay('<div class="ov-icon">DB_WRITE</div><div class="ov-title">SAVING RUN...</div><div class="ov-body">Committing score to the leaderboard.</div>');
     try {
       var saved = await Store.addEntry({
         name: game.name,
@@ -509,7 +509,7 @@
     $('result-eth').textContent = fmtEth(score, CONFIG.ethDisplayPrice) + ' · ' + (up ? fmtUsdSigned(score - CONFIG.startingUsd) + ' on the day' : fmtUsdSigned(score - CONFIG.startingUsd));
     $('result-rank').innerHTML = saveError
       ? '<span class="bad">SCORE NOT SAVED — check the local server</span>'
-      : '<span class="pos">#' + rank + '</span> on today’s leaderboard' + (rank === 1 ? ' — top score' : '');
+      : '<span class="pos">#' + rank + '</span> on the all-time leaderboard' + (rank === 1 ? ' — top score' : '');
     $('result-swag').textContent = score >= CONFIG.swagThresholdUsd
       ? 'You finished ≥ $1M — claim your “I simulate before I sign” swag at the desk.'
       : '';

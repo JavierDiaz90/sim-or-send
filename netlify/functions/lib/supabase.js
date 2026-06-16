@@ -109,10 +109,9 @@ function statsFromRows(rows) {
   }, { plays: 0, sends: 0, sendHits: 0, dodges: 0, dodgedUsd: 0 });
 }
 
-async function readTodayRows() {
+async function readLeaderboardRows() {
   return supabaseFetch(TABLE, {
     select: 'id,name,score,remaining_ms,send_count,client_ts,sends,send_hits,dodges,dodged_usd',
-    event_date: `eq.${todayKey()}`,
     order: 'score.desc,remaining_ms.desc,created_at.asc',
   }, {
     method: 'GET',
@@ -125,7 +124,7 @@ module.exports = {
   cleanEntry,
   cleanStats,
   json,
-  readTodayRows,
+  readLeaderboardRows,
   statsFromRows,
   supabaseFetch,
   supabaseHeaders,

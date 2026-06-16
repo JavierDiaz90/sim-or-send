@@ -11,7 +11,7 @@
     'SEND IT pays +2% — when the dice are kind. They usually aren’t.',
     '9 of 10 blind sends hit a failure. The odds tell the truth.',
     'Finish ≥ $1M and claim “I simulate before I sign” swag.',
-    'Top score today wins the prize. Sub-60-second rounds — step up.',
+    'Top all-time score wins the prize. Sub-60-second rounds — step up.',
   ];
   var tagIdx = 0;
 
@@ -30,14 +30,12 @@
     rendering = true;
     try {
       var state = await Store.getState();
-      $('board-date').textContent = new Date().toLocaleDateString('en-US', {
-        weekday: 'long', month: 'long', day: 'numeric',
-      }) + ' · live daily database';
+      $('board-date').textContent = 'All-time leaderboard · live database';
 
       var board = state.board.slice().sort(Engine.compareEntries).slice(0, CONFIG.leaderboardSize);
       var table = $('board-table');
       if (!board.length) {
-        table.innerHTML = '<div class="board-empty">No runs yet today — be the first on the board.</div>';
+        table.innerHTML = '<div class="board-empty">No runs yet — be the first on the board.</div>';
       } else {
         table.innerHTML = board.map(function (e, i) {
           var rank = i + 1;

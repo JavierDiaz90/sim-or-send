@@ -7,7 +7,7 @@ hits) or **SIMULATE** (Enso Quote Simulator catches the failure first — what y
 is what you get).
 
 No build step or third-party runtime dependencies. The vanilla frontend is served by a
-small Node backend that persists the daily leaderboard to a local JSON database.
+small Node backend that persists the leaderboard to a local JSON database.
 
 ## Run it
 
@@ -23,8 +23,8 @@ Both pages use the same local backend, so the game and leaderboard can run in se
 browser windows or devices that can reach the kiosk computer. On the iPad, add the game
 to the Home Screen for fullscreen, or use Safari with Guided Access for kiosk lockdown.
 
-The board resets itself at midnight local time. Data is stored in
-`data/leaderboard.json`; the `data/` directory is ignored by Git.
+The board does not reset at midnight. Data is stored in `data/leaderboard.json`;
+the `data/` directory is ignored by Git.
 
 ## Hosted Netlify + Supabase mode
 
@@ -61,7 +61,8 @@ curl -X POST https://simorsend.netlify.app/api/reset \
   -H "x-admin-token: YOUR_ADMIN_RESET_TOKEN"
 ```
 
-This deletes only rows for today's leaderboard date.
+This deletes only rows for today's leaderboard date. The live leaderboard otherwise
+shows all saved rows across dates.
 
 ## Tuning per event / per day
 
@@ -73,7 +74,7 @@ Everything marketing may want to touch is in [js/config.js](js/config.js):
 - Quote-decay pressure per round (visual urgency device; outcomes come from the dice)
 - Malicious drain: randomized around **43–57%** so losses feel like live execution
   rather than scripted round numbers; tune `severity.maliciousDrainPct`
-- Lead capture: `'optional'` (or `'off'` / `'required'`) — email/Telegram for the daily prize
+- Lead capture: `'optional'` (or `'off'` / `'required'`) — email/Telegram for prize follow-up
 - `docsUrl` — the QR code target on the result screen
 
 After changing odds/severities, re-verify the maths:
@@ -110,7 +111,7 @@ SIMORSEND.forceNext('malicious')   // also: overquote | decay | policy | clean |
 | [leaderboard.html](leaderboard.html) + [js/board.js](js/board.js) | Second screen: live top-30, attract taglines, stand stats |
 | [js/config.js](js/config.js) | Every tunable parameter |
 | [js/engine.js](js/engine.js) | Pure game maths (dice, payouts, ranking) — shared with the verifier |
-| [server.js](server.js) | Static server + daily JSON leaderboard API |
+| [server.js](server.js) | Static server + JSON leaderboard API |
 | [js/store.js](js/store.js) | Browser client for the leaderboard API |
 | [netlify/functions](netlify/functions) | Hosted API routes for Supabase-backed deploys |
 | [supabase/schema.sql](supabase/schema.sql) | Supabase table schema for hosted leaderboards |
@@ -137,4 +138,4 @@ SIMORSEND.forceNext('malicious')   // also: overquote | decay | policy | clean |
 - **Name:** SIM OR SEND (the doc's recommendation)
 - **Malicious drain:** randomized 43–57% range (config flag to change)
 - **Lead capture:** optional field at name entry, stored with the board entry
-- Prize tiering: result screen highlights the daily #1; tiering still up to the booth team
+- Prize tiering: result screen highlights the all-time #1; tiering still up to the booth team

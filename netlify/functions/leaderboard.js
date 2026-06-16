@@ -2,9 +2,8 @@
 
 const {
   json,
-  readTodayRows,
+  readLeaderboardRows,
   statsFromRows,
-  todayKey,
   toPublicEntry,
 } = require('./lib/supabase');
 
@@ -14,9 +13,9 @@ exports.handler = async function handler(event) {
   }
 
   try {
-    const rows = await readTodayRows();
+    const rows = await readLeaderboardRows();
     return json(200, {
-      date: todayKey(),
+      date: 'all-time',
       board: rows.map(toPublicEntry),
       stats: statsFromRows(rows),
     });

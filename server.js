@@ -46,6 +46,18 @@ function getDay(db) {
   return { key, value: db.days[key] };
 }
 
+function allTimeState(db) {
+  return Object.keys(db.days || {}).reduce((state, key) => {
+    const day = db.days[key] || {};
+    state.board = state.board.concat(day.board || []);
+    const stats = day.stats || {};
+    Object.keys(state.stats).forEach(statKey => {
+      state.stats[statKey] += stats[statKey] || 0;
+    });
+    return state;
+  }, { board: [], stats: emptyStats() });
+}
+
 function compareEntries(a, b) {
   if (b.score !== a.score) return b.score - a.score;
   return (b.remainingMs || 0) - (a.remainingMs || 0);
@@ -118,8 +130,7 @@ function cleanStats(raw) {
 async function handleApi(req, res, pathname) {
   if (req.method === 'GET' && pathname === '/api/leaderboard') {
     const db = readDb();
-    const day = getDay(db);
-    return json(res, 200, publicState(day.value, day.key));
+    return json(res, 200, publicState(allTimeState(db), 'all-time'));
   }
 
   if (req.method === 'POST' && pathname === '/api/entries') {
@@ -133,8 +144,10 @@ async function handleApi(req, res, pathname) {
       day.value.board.sort(compareEntries);
       Object.keys(stats).forEach(key => { day.value.stats[key] += stats[key]; });
       writeDb(db);
-      const rank = day.value.board.findIndex(item => item.id === entry.id) + 1;
-      return json(res, 201, { rank, state: publicState(day.value, day.key) });
+      const leaderboard = allTimeState(db);
+      leaderboard.board.sort(compareEntries);
+      const rank = leaderboard.board.findIndex(item => item.id === entry.id) + 1;
+      return json(res, 201, { rank, state: publicState(leaderboard, 'all-time') });
     } catch (error) {
       return json(res, 400, { error: error.message });
     }
