@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#151b16">
+  <title>AgeLens — AoE2 Replay Coach</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="/">
+      <span class="brand-mark">A</span>
+      <span>AgeLens</span>
+      <small>Replay coach</small>
+    </a>
+    <div class="status">
+      <span class="status-dot"></span>
+      <span id="ai-status">Checking coach…</span>
+    </div>
+  </header>
+
+  <main>
+    <section id="upload-view" class="upload-view">
+      <div class="hero-copy">
+        <p class="eyebrow">Your game, finally explained</p>
+        <h1>Turn a replay into<br><em>better decisions.</em></h1>
+        <p class="hero-sub">Upload an Age of Empires II: DE recorded game. AgeLens extracts the match timeline, then lets you question the evidence.</p>
+      </div>
+
+      <form id="upload-form" class="drop-card">
+        <input id="replay-input" type="file" name="replay" accept=".aoe2record,.mgz,.mgx,.mgl" hidden>
+        <div class="drop-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg>
+        </div>
+        <h2>Drop your replay here</h2>
+        <p>.aoe2record · processed locally · max 100 MB</p>
+        <button type="button" id="browse-button" class="primary-button">Choose replay</button>
+        <div id="selected-file" class="selected-file" hidden></div>
+        <button type="submit" id="analyze-button" class="analyze-button" hidden>Analyze match <span>→</span></button>
+        <div id="upload-progress" class="upload-progress" hidden>
+          <span></span>
+          <p>Reading commands and rebuilding the timeline…</p>
+        </div>
+        <div id="upload-error" class="error-box" hidden></div>
+      </form>
+
+      <div class="trust-row">
+        <span>01 · Replay metadata</span>
+        <span>02 · Strategic timeline</span>
+        <span>03 · Evidence-grounded chat</span>
+      </div>
+    </section>
+
+    <section id="dashboard-view" class="dashboard-view" hidden>
+      <div class="match-header">
+        <div>
+          <button id="new-replay" class="text-button">← New replay</button>
+          <p class="eyebrow" id="match-type">Ranked match</p>
+          <h1 id="match-title">Arabia</h1>
+          <p class="match-file" id="match-file"></p>
+        </div>
+        <div class="match-meta">
+          <div><span>Duration</span><strong id="match-duration">—</strong></div>
+          <div><span>Map size</span><strong id="match-size">—</strong></div>
+          <div><span>Population</span><strong id="match-pop">—</strong></div>
+        </div>
+      </div>
+
+      <div class="workspace">
+        <div class="analysis-column">
+          <section class="panel players-panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Matchup</p>
+                <h2>Players</h2>
+              </div>
+              <span class="evidence-tag">Parsed evidence</span>
+            </div>
+            <div id="players" class="players"></div>
+          </section>
+
+          <section class="panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">What changed the game</p>
+                <h2>Key moments</h2>
+              </div>
+            </div>
+            <div id="insights" class="insights"></div>
+          </section>
+
+          <section class="panel">
+            <div class="section-heading timeline-heading">
+              <div>
+                <p class="eyebrow">Recorded commands</p>
+                <h2>Timeline</h2>
+              </div>
+              <div id="timeline-filters" class="filters"></div>
+            </div>
+            <div id="timeline" class="timeline"></div>
+          </section>
+
+          <details class="limits">
+            <summary>What this replay cannot tell us yet</summary>
+            <ul id="limits-list"></ul>
+          </details>
+        </div>
+
+        <aside class="coach-panel">
+          <div class="coach-head">
+            <div class="coach-avatar">A</div>
+            <div>
+              <h2>Ask your coach</h2>
+              <p id="coach-mode">Grounded in this replay</p>
+            </div>
+          </div>
+          <div id="messages" class="messages">
+            <div class="message assistant">
+              <p>I’ve read the replay. Ask me what happened, compare age timings, or inspect your military production.</p>
+            </div>
+          </div>
+          <div id="suggestions" class="suggestions">
+            <button>Summarize this match</button>
+            <button>Compare our age-up timings</button>
+            <button>What military did I queue?</button>
+          </div>
+          <form id="chat-form" class="chat-form">
+            <textarea id="chat-input" rows="1" placeholder="Why did I lose?" aria-label="Ask about the match"></textarea>
+            <button type="submit" aria-label="Send question">↑</button>
+          </form>
+          <p class="coach-note">The coach cites replay evidence and flags missing data.</p>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
